@@ -1,18 +1,29 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Target, Calendar, DollarSign, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
+import { useTradingPlan } from '../contexts/TradingPlanContext';
 
-interface TradingPlanGeneratorProps {
-  accountSize: number;
-  propFirm: string;
-  riskTolerance: 'conservative' | 'moderate' | 'aggressive';
-}
-
-const TradingPlanGenerator: React.FC<TradingPlanGeneratorProps> = ({ 
-  accountSize, 
-  propFirm, 
-  riskTolerance 
-}) => {
+const TradingPlanGenerator: React.FC = () => {
+  const navigate = useNavigate();
+  const { propFirm, accountConfig, riskConfig } = useTradingPlan();
   const [selectedPlan, setSelectedPlan] = useState<'30day' | '45day' | '60day'>('30day');
+
+  // Redirect if required data is missing
+  if (!propFirm || !accountConfig || !riskConfig) {
+    navigate('/setup/firm');
+    return null;
+  }
+
+  const accountSize = accountConfig.size;
+  
+  // Derive risk tolerance from risk percentage
+  const getRiskTolerance = (riskPercentage: number): 'conservative' | 'moderate' | 'aggressive' => {
+    if (riskPercentage <= 0.5) return 'conservative';
+    if (riskPercentage <= 1) return 'moderate';
+    return 'aggressive';
+  };
+  
+  const riskTolerance = getRiskTolerance(riskConfig.riskPercentage);
 
   // Prop firm rules database
   const propFirmRules = {
@@ -42,7 +53,7 @@ const TradingPlanGenerator: React.FC<TradingPlanGeneratorProps> = ({
     }
   };
 
-  const rules = propFirmRules[propFirm as keyof typeof propFirmRules] || propFirmRules.FTMO;
+  const rules = propFirmRules[propFirm.name as keyof typeof propFirmRules] || propFirmRules.FTMO;
 
   // Risk parameters based on tolerance
   const riskParams = {
@@ -154,7 +165,7 @@ const TradingPlanGenerator: React.FC<TradingPlanGeneratorProps> = ({
 
       {/* Prop Firm Rules */}
       <div className="bg-dark-800/60 backdrop-blur-sm rounded-2xl border border-dark-700 p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">{propFirm} Trading Rules</h3>
+        <h3 className="text-lg font-semibold text-white mb-4">{propFirm.name} Trading Rules</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-dark-700/50 rounded-xl p-4">
             <div className="flex items-center space-x-2 mb-2">
