@@ -207,226 +207,228 @@ const TradingPlanGenerator: React.FC = () => {
           </div>
 
           <div className="space-y-6">
-      {/* Plan Selection */}
-      <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700 p-6">
-        <h3 className="text-xl font-semibold text-white mb-4">Select Trading Plan Timeline</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[
-            { id: '30day', label: '30-Day Plan', desc: 'Aggressive timeline' },
-            { id: '45day', label: '45-Day Plan', desc: 'Balanced approach' },
-            { id: '60day', label: '60-Day Plan', desc: 'Conservative timeline' }
-          ].map((option) => (
-            <button
-              key={option.id}
-              onClick={() => setSelectedPlan(option.id as any)}
-              className={`p-4 rounded-xl border-2 transition-all ${
-                selectedPlan === option.id
-                  ? 'border-blue-500 bg-blue-500/20'
-                  : 'border-gray-600 bg-gray-700/50 hover:border-gray-500'
-              }`}
-            >
-              <div className="text-center">
-                <div className="font-semibold text-white">{option.label}</div>
-                <div className="text-sm text-gray-400 mt-1">{option.desc}</div>
+            {/* Plan Selection */}
+            <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700 p-6">
+              <h3 className="text-xl font-semibold text-white mb-4">Select Trading Plan Timeline</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[
+                  { id: '30day', label: '30-Day Plan', desc: 'Aggressive timeline' },
+                  { id: '45day', label: '45-Day Plan', desc: 'Balanced approach' },
+                  { id: '60day', label: '60-Day Plan', desc: 'Conservative timeline' }
+                ].map((option) => (
+                  <button
+                    key={option.id}
+                    onClick={() => setSelectedPlan(option.id as any)}
+                    className={`p-4 rounded-xl border-2 transition-all ${
+                      selectedPlan === option.id
+                        ? 'border-blue-500 bg-blue-500/20'
+                        : 'border-gray-600 bg-gray-700/50 hover:border-gray-500'
+                    }`}
+                  >
+                    <div className="text-center">
+                      <div className="font-semibold text-white">{option.label}</div>
+                      <div className="text-sm text-gray-400 mt-1">{option.desc}</div>
+                    </div>
+                  </button>
+                ))}
               </div>
-            </button>
-          ))}
-        </div>
-      </div>
+            </div>
 
-      {/* Prop Firm Rules */}
-      <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700 p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">{propFirm.name} Trading Rules</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-gray-700/50 rounded-xl p-4">
-            <div className="flex items-center space-x-2 mb-2">
-              <AlertTriangle className="w-4 h-4 text-red-400" />
-              <span className="text-white font-medium">Daily Loss Limit</span>
-            </div>
-            <div className="text-2xl font-bold text-red-400">{rules.dailyLoss}%</div>
-            <div className="text-sm text-gray-400">${(accountSize * rules.dailyLoss / 100).toLocaleString()}</div>
-          </div>
-          
-          <div className="bg-gray-700/50 rounded-xl p-4">
-            <div className="flex items-center space-x-2 mb-2">
-              <Target className="w-4 h-4 text-blue-500" />
-              <span className="text-white font-medium">Profit Target</span>
-            </div>
-            <div className="text-2xl font-bold text-blue-500">{rules.profitTarget}%</div>
-            <div className="text-sm text-gray-400">${(accountSize * rules.profitTarget / 100).toLocaleString()}</div>
-          </div>
-          
-          <div className="bg-gray-700/50 rounded-xl p-4">
-            <div className="flex items-center space-x-2 mb-2">
-              <TrendingUp className="w-4 h-4 text-yellow-400" />
-              <span className="text-white font-medium">Max Drawdown</span>
-            </div>
-            <div className="text-2xl font-bold text-yellow-400">{rules.maxDrawdown}%</div>
-            <div className="text-sm text-gray-400">${(accountSize * rules.maxDrawdown / 100).toLocaleString()}</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Trading Sequence */}
-      <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700 p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">Detailed Trading Sequence</h3>
-        <div className="space-y-4">
-          {plan.trades.map((trade, index) => (
-            <div key={trade.id} className="bg-gray-700/50 rounded-xl p-4 border border-gray-600">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-                    {trade.id}
+            {/* Prop Firm Rules */}
+            <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700 p-6">
+              <h3 className="text-lg font-semibold text-white mb-4">{propFirm.name} Trading Rules</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-gray-700/50 rounded-xl p-4">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <AlertTriangle className="w-4 h-4 text-red-400" />
+                    <span className="text-white font-medium">Daily Loss Limit</span>
                   </div>
-                  <span className="text-white font-medium">Trade {trade.id}</span>
+                  <div className="text-2xl font-bold text-red-400">{rules.dailyLoss}%</div>
+                  <div className="text-sm text-gray-400">${(accountSize * rules.dailyLoss / 100).toLocaleString()}</div>
                 </div>
-                <div className="text-blue-500 font-semibold">
-                  +${trade.expectedReturn.toFixed(0)}
+                
+                <div className="bg-gray-700/50 rounded-xl p-4">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Target className="w-4 h-4 text-blue-500" />
+                    <span className="text-white font-medium">Profit Target</span>
+                  </div>
+                  <div className="text-2xl font-bold text-blue-500">{rules.profitTarget}%</div>
+                  <div className="text-sm text-gray-400">${(accountSize * rules.profitTarget / 100).toLocaleString()}</div>
                 </div>
-              </div>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                <div>
-                  <div className="text-gray-400">Risk</div>
-                  <div className="text-white font-medium">{trade.risk}%</div>
-                </div>
-                <div>
-                  <div className="text-gray-400">Target</div>
-                  <div className="text-blue-400 font-medium">{trade.target}%</div>
-                </div>
-                <div>
-                  <div className="text-gray-400">Timeframe</div>
-                  <div className="text-white">{trade.timeframe}</div>
-                </div>
-                <div>
-                  <div className="text-gray-400">Pairs</div>
-                  <div className="text-white">{trade.pairs.join(', ')}</div>
+                
+                <div className="bg-gray-700/50 rounded-xl p-4">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <TrendingUp className="w-4 h-4 text-yellow-400" />
+                    <span className="text-white font-medium">Max Drawdown</span>
+                  </div>
+                  <div className="text-2xl font-bold text-yellow-400">{rules.maxDrawdown}%</div>
+                  <div className="text-sm text-gray-400">${(accountSize * rules.maxDrawdown / 100).toLocaleString()}</div>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
 
-      {/* Plan Timeline */}
-      <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700 p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">Plan Completion Timeline</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <div className="bg-blue-600/20 border border-blue-600 rounded-xl p-4">
-              <div className="flex items-center space-x-2 mb-2">
-                <Calendar className="w-4 h-4 text-blue-400" />
-                <span className="text-blue-400 font-medium">Phase 1 (Days 1-{plan.timeline.phase1})</span>
-              </div>
-              <div className="text-white">Complete Trades 1-5</div>
-              <div className="text-blue-500 font-semibold">
-                Target: +${plan.targets.phase1Return.toFixed(0)} ({((plan.targets.phase1Return / accountSize) * 100).toFixed(1)}%)
-              </div>
-            </div>
-            
-            <div className="bg-yellow-600/20 border border-yellow-600 rounded-xl p-4">
-              <div className="flex items-center space-x-2 mb-2">
-                <Calendar className="w-4 h-4 text-yellow-400" />
-                <span className="text-yellow-400 font-medium">Phase 2 (Days {plan.timeline.phase1 + 1}-{plan.timeline.total})</span>
-              </div>
-              <div className="text-white">Scale to higher risk trades</div>
-              <div className="text-yellow-500 font-semibold">
-                Target: +${plan.targets.phase2Return.toFixed(0)} ({((plan.targets.phase2Return / accountSize) * 100).toFixed(1)}%)
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-gray-700/50 rounded-xl p-4">
-            <h4 className="text-white font-medium mb-4">Expected Results</h4>
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <span className="text-gray-400">Total Timeline:</span>
-                <span className="text-white">{plan.timeline.total} days</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">Total Target:</span>
-                <span className="text-blue-500 font-semibold">${plan.targets.totalTarget.toFixed(0)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">Monthly Earnings:</span>
-                <span className="text-blue-500 font-semibold">${plan.targets.monthlyEarnings.toFixed(0)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">Success Rate:</span>
-                <span className="text-blue-500 font-semibold">87-95%</span>
+            {/* Trading Sequence */}
+            <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700 p-6">
+              <h3 className="text-lg font-semibold text-white mb-4">Detailed Trading Sequence</h3>
+              <div className="space-y-4">
+                {plan.trades.map((trade, index) => (
+                  <div key={trade.id} className="bg-gray-700/50 rounded-xl p-4 border border-gray-600">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                          {trade.id}
+                        </div>
+                        <span className="text-white font-medium">Trade {trade.id}</span>
+                      </div>
+                      <div className="text-blue-500 font-semibold">
+                        +${trade.expectedReturn.toFixed(0)}
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                      <div>
+                        <div className="text-gray-400">Risk</div>
+                        <div className="text-white font-medium">{trade.risk}%</div>
+                      </div>
+                      <div>
+                        <div className="text-gray-400">Target</div>
+                        <div className="text-blue-400 font-medium">{trade.target}%</div>
+                      </div>
+                      <div>
+                        <div className="text-gray-400">Timeframe</div>
+                        <div className="text-white">{trade.timeframe}</div>
+                      </div>
+                      <div>
+                        <div className="text-gray-400">Pairs</div>
+                        <div className="text-white">{trade.pairs.join(', ')}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      {/* Risk Management Protocol */}
-      <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700 p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">Risk Management Protocol</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-3">
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-blue-500" />
-              <span className="text-white text-sm">Maximum daily loss: {rules.dailyLoss}% of account</span>
+            {/* Plan Timeline */}
+            <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700 p-6">
+              <h3 className="text-lg font-semibold text-white mb-4">Plan Completion Timeline</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="bg-blue-600/20 border border-blue-600 rounded-xl p-4">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <Calendar className="w-4 h-4 text-blue-400" />
+                      <span className="text-blue-400 font-medium">Phase 1 (Days 1-{plan.timeline.phase1})</span>
+                    </div>
+                    <div className="text-white">Complete Trades 1-5</div>
+                    <div className="text-blue-500 font-semibold">
+                      Target: +${plan.targets.phase1Return.toFixed(0)} ({((plan.targets.phase1Return / accountSize) * 100).toFixed(1)}%)
+                    </div>
+                  </div>
+                  
+                  <div className="bg-yellow-600/20 border border-yellow-600 rounded-xl p-4">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <Calendar className="w-4 h-4 text-yellow-400" />
+                      <span className="text-yellow-400 font-medium">Phase 2 (Days {plan.timeline.phase1 + 1}-{plan.timeline.total})</span>
+                    </div>
+                    <div className="text-white">Scale to higher risk trades</div>
+                    <div className="text-yellow-500 font-semibold">
+                      Target: +${plan.targets.phase2Return.toFixed(0)} ({((plan.targets.phase2Return / accountSize) * 100).toFixed(1)}%)
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-gray-700/50 rounded-xl p-4">
+                  <h4 className="text-white font-medium mb-4">Expected Results</h4>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Total Timeline:</span>
+                      <span className="text-white">{plan.timeline.total} days</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Total Target:</span>
+                      <span className="text-blue-500 font-semibold">${plan.targets.totalTarget.toFixed(0)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Monthly Earnings:</span>
+                      <span className="text-blue-500 font-semibold">${plan.targets.monthlyEarnings.toFixed(0)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Success Rate:</span>
+                      <span className="text-blue-500 font-semibold">87-95%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-blue-500" />
-              <span className="text-white text-sm">Maximum total open risk: 3% of account</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-blue-500" />
-              <span className="text-white text-sm">Consecutive loss limit: 3 trades maximum</span>
-            </div>
-          </div>
-          <div className="space-y-3">
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-blue-500" />
-              <span className="text-white text-sm">Recovery protocol after losses</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-blue-500" />
-              <span className="text-white text-sm">Automated position sizing</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-blue-500" />
-              <span className="text-white text-sm">Real-time rule compliance monitoring</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
-          {/* Action Buttons */}
-          <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700 p-6">
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            {/* Risk Management Protocol */}
+            <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700 p-6">
+              <h3 className="text-lg font-semibold text-white mb-4">Risk Management Protocol</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-blue-500" />
+                    <span className="text-white text-sm">Maximum daily loss: {rules.dailyLoss}% of account</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-blue-500" />
+                    <span className="text-white text-sm">Maximum total open risk: 3% of account</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-blue-500" />
+                    <span className="text-white text-sm">Consecutive loss limit: 3 trades maximum</span>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-blue-500" />
+                    <span className="text-white text-sm">Recovery protocol after losses</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-blue-500" />
+                    <span className="text-white text-sm">Automated position sizing</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-blue-500" />
+                    <span className="text-white text-sm">Real-time rule compliance monitoring</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700 p-6">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button
+                  onClick={downloadPlan}
+                  className="flex items-center space-x-2 bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-xl font-semibold transition-colors"
+                >
+                  <Download className="w-5 h-5" />
+                  <span>Download Plan</span>
+                </button>
+                
+                <button
+                  onClick={handleContinue}
+                  className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition-colors shadow-lg"
+                >
+                  <span>Continue to Dashboard</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Navigation */}
+            <div className="flex justify-between items-center mt-8">
               <button
-                onClick={downloadPlan}
-                className="flex items-center space-x-2 bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-xl font-semibold transition-colors"
+                onClick={() => navigate('/setup/risk')}
+                className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors"
               >
-                <Download className="w-5 h-5" />
-                <span>Download Plan</span>
-              </button>
-              
-              <button
-                onClick={handleContinue}
-                className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition-colors shadow-lg"
-              >
-                <span>Continue to Dashboard</span>
-                <ArrowRight className="w-5 h-5" />
+                <ArrowLeft className="w-5 h-5" />
+                <span>Back to Risk Config</span>
               </button>
             </div>
           </div>
-
-          {/* Navigation */}
-          <div className="flex justify-between items-center mt-8">
-            <button
-              onClick={() => navigate('/setup/risk')}
-              className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              <span>Back to Risk Config</span>
-            </button>
-          </div>
         </div>
+      </div>
     </div>
   );
 };
