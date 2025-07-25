@@ -5,7 +5,7 @@ import MembershipPlans from './components/MembershipPlans';
 import PropFirmSelection from './components/PropFirmSelection';
 import AccountConfiguration from './components/AccountConfiguration';
 import RiskConfiguration from './components/RiskConfiguration';
-import TradingPlanGeneration from './components/TradingPlanGeneration';
+import TradingPlanGeneration from './components/TradingPlanGenerator';
 import Dashboard from './components/Dashboard';
 import { UserProvider } from './contexts/UserContext';
 import { TradingPlanProvider } from './contexts/TradingPlanContext';
