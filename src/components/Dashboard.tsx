@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
   BarChart3, 
   TrendingUp, 
@@ -13,7 +13,7 @@ import {
   Users,
   Zap
 } from 'lucide-react';
-import { useUser } from '../contexts/UserContext';
+import { useTradingPlan } from '../contexts/TradingPlanContext';
 import TradingChart from './TradingChart';
 import SignalsFeed from './SignalsFeed';
 import RiskManagement from './RiskManagement';
@@ -21,17 +21,17 @@ import PerformanceAnalytics from './PerformanceAnalytics';
 import AlertSystem from './AlertSystem';
 
 const Dashboard = () => {
-  const { user, logout } = useUser();
+  const { propFirm, accountConfig, riskConfig, tradingPlan } = useTradingPlan();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
 
-  if (!user) {
-    navigate('/login');
+  // If no trading plan data, redirect to setup
+  if (!propFirm || !accountConfig || !riskConfig) {
+    navigate('/setup/prop-firm');
     return null;
   }
 
-  const handleLogout = () => {
-    logout();
+  const handleBackToSetup = () => {
     navigate('/');
   };
 
@@ -43,31 +43,38 @@ const Dashboard = () => {
     { id: 'analytics', label: 'Analytics', icon: <Activity className="w-5 h-5" /> },
   ];
 
+  // Calculate current stats based on trading plan
+  const currentBalance = accountConfig.size;
+  const profitTarget = (accountConfig.size * (propFirm.rules?.profitTarget || 10)) / 100;
+  const currentProfit = tradingPlan ? 
+    tradingPlan.trades.reduce((sum, trade) => sum + (trade.expectedReturn || 0), 0) * 0.3 : 0; // 30% progress simulation
+  const winRate = 87.4; // Simulated win rate
+  const riskScore = riskConfig.riskPercentage;
   const stats = [
     {
       label: 'Total Profit',
-      value: '$47,230',
-      change: '+12.3%',
+      value: `$${Math.round(currentProfit).toLocaleString()}`,
+      change: `+${((currentProfit / currentBalance) * 100).toFixed(1)}%`,
       positive: true,
       icon: <DollarSign className="w-6 h-6" />
     },
     {
       label: 'Win Rate',
-      value: '87.4%',
+      value: `${winRate}%`,
       change: '+2.1%',
       positive: true,
       icon: <Target className="w-6 h-6" />
     },
     {
       label: 'Active Signals',
-      value: '24',
+      value: tradingPlan ? tradingPlan.trades.length.toString() : '0',
       change: '+5',
       positive: true,
       icon: <Zap className="w-6 h-6" />
     },
     {
       label: 'Risk Score',
-      value: '2.1%',
+      value: `${riskScore}%`,
       change: '-0.3%',
       positive: true,
       icon: <Shield className="w-6 h-6" />
@@ -81,12 +88,12 @@ const Dashboard = () => {
         <div className="p-6 border-b border-gray-700">
           <div className="flex items-center space-x-3">
             <TrendingUp className="w-8 h-8 text-blue-400" />
-            <span className="text-xl font-bold text-white">TraderEdge Pro</span>
+            <span className="text-xl font-bold text-white">FundedFlow Pro</span>
           </div>
           <div className="mt-4">
-            <div className="text-sm text-gray-400">Welcome back,</div>
-            <div className="text-lg font-semibold text-white">{user.name}</div>
-            <div className="text-sm text-blue-400 capitalize">{user.membershipTier} Member</div>
+            <div className="text-sm text-gray-400">Trading Account</div>
+            <div className="text-lg font-semibold text-white">{propFirm.name}</div>
+            <div className="text-sm text-blue-400">${accountConfig.size.toLocaleString()} Account</div>
           </div>
         </div>
 
@@ -116,11 +123,13 @@ const Dashboard = () => {
               <span>Settings</span>
             </button>
             <button 
-              onClick={handleLogout}
+              onClick={handleBackToSetup}
               className="w-full flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-red-600 hover:text-white rounded-lg transition-colors"
             >
-              <LogOut className="w-5 h-5" />
-              <span>Logout</span>
+              <Link to="/" className="flex items-center space-x-3">
+                <LogOut className="w-5 h-5" />
+                <span>Back to Home</span>
+              </Link>
             </button>
           </div>
         </div>
@@ -137,7 +146,7 @@ const Dashboard = () => {
                 <Bell className="w-6 h-6" />
               </button>
               <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-semibold text-sm">{user.name.charAt(0)}</span>
+                <span className="text-white font-semibold text-sm">T</span>
               </div>
             </div>
           </div>
@@ -147,6 +156,31 @@ const Dashboard = () => {
         <main className="flex-1 p-6 overflow-y-auto">
           {activeTab === 'overview' && (
             <div className="space-y-6">
+              {/* Account Status */}
+              <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
+                <h3 className="text-lg font-semibold text-white mb-4">Account Status</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-blue-400 mb-1">
+                      ${currentBalance.toLocaleString()}
+                    </div>
+                    <div className="text-sm text-gray-400">Account Balance</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-green-400 mb-1">
+                      ${profitTarget.toLocaleString()}
+                    </div>
+                    <div className="text-sm text-gray-400">Profit Target</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-purple-400 mb-1">
+                      {accountConfig.challengeType.replace('-', ' ').toUpperCase()}
+                    </div>
+                    <div className="text-sm text-gray-400">Challenge Type</div>
+                  </div>
+                </div>
+              </div>
+
               {/* Stats Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat, index) => (
@@ -167,6 +201,50 @@ const Dashboard = () => {
                 ))}
               </div>
 
+              {/* Trading Plan Summary */}
+              {tradingPlan && (
+                <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
+                  <h3 className="text-lg font-semibold text-white mb-4">Current Trading Plan</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="text-white font-medium mb-3">Plan Overview</h4>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Timeline:</span>
+                          <span className="text-white">{tradingPlan.timeline.total} days</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Total Trades:</span>
+                          <span className="text-white">{tradingPlan.trades.length}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Risk per Trade:</span>
+                          <span className="text-white">{riskConfig.riskPercentage}%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Risk:Reward:</span>
+                          <span className="text-white">1:{riskConfig.riskRewardRatio}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-white font-medium mb-3">Progress</h4>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-400">Phase 1 Progress:</span>
+                          <span className="text-blue-400">30%</span>
+                        </div>
+                        <div className="w-full bg-gray-700 rounded-full h-2">
+                          <div className="bg-blue-500 h-2 rounded-full" style={{ width: '30%' }}></div>
+                        </div>
+                        <div className="text-xs text-gray-400 mt-2">
+                          Current profit: ${Math.round(currentProfit).toLocaleString()} / ${profitTarget.toLocaleString()} target
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
               {/* Quick Actions */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
