@@ -14,377 +14,276 @@ const PropFirmSelection = () => {
     {
       name: 'FTMO',
       logo: '🏆',
-      description: 'Leading prop firm with 2-step evaluation',
+      description: 'Leading prop firm with multiple account types and scaling up to $2M',
       rules: {
-        dailyLoss: 5,
-        maxDrawdown: 10,
-        profitTarget: 10,
-        minTradingDays: 10,
+        dailyLoss: 5, // 5% of initial balance
+        maxDrawdown: 10, // 10% of initial balance
+        profitTarget: 10, // 10% Phase 1, 5% Phase 2
+        phase2Target: 5,
+        minTradingDays: 10, // 10 days per phase
         maxPositionSize: 2,
         scalingTarget: 10,
-        challengeTypes: ['2-step', 'instant-funding'],
-        accountSizes: [10000, 25000, 50000, 100000, 200000]
+        challengeTypes: ['FTMO Challenge (Standard)', 'FTMO Swing Trading', 'FTMO Aggressive'],
+        accountSizes: [10000, 25000, 50000, 100000, 200000],
+        timeLimit: 30, // 30 days Phase 1, 60 days Phase 2
+        leverage: 100, // 1:100 standard, 1:30 swing
+        profitSplit: 80, // 80% trader, 90% after first withdrawal
+        payoutSchedule: 'Bi-weekly',
+        overnightPositions: false, // Forbidden on standard
+        newsTrading: false, // Forbidden on standard
+        weekendHolding: false,
+        consistencyRule: true, // No single day >50% of total profit
+        prohibitedStrategies: ['Martingale', 'Grid Trading', 'Latency Arbitrage', 'Tick Scalping EAs'],
+        platforms: ['MetaTrader 4/5', 'cTrader', 'DXTrade'],
+        instruments: ['Forex', 'Indices', 'Commodities', 'Crypto', 'Stocks'],
+        resetPolicy: true,
+        maxScaling: 2000000
       },
       popular: true
     },
     {
-      name: 'MyForexFunds',
-      logo: '💰',
-      description: 'Flexible evaluation with multiple account types',
+      name: 'Goat Funded Trader',
+      logo: '🐐',
+      description: 'No time limit challenges with unlimited resets',
       rules: {
         dailyLoss: 5,
-        maxDrawdown: 12,
-        profitTarget: 8,
-        minTradingDays: 5,
+        maxDrawdown: 10,
+        profitTarget: 10,
+        phase2Target: 5,
+        minTradingDays: 3,
         maxPositionSize: 3,
-        scalingTarget: 8,
-        challengeTypes: ['1-step', '2-step', 'instant-funding'],
-        accountSizes: [5000, 10000, 25000, 50000, 100000, 200000, 300000]
+        scalingTarget: 10,
+        challengeTypes: ['Two-Step No-Time-Limit', 'Two-Step Swing+', 'Two-Step Goat Challenge', 'Instant Funding'],
+        accountSizes: [2500, 5000, 10000, 25000, 50000, 100000, 200000],
+        timeLimit: null, // No time limit
+        leverage: 100,
+        profitSplit: 80, // Upgradeable to 100%
+        payoutSchedule: 'Bi-weekly',
+        overnightPositions: 'swing_only', // Allowed on Swing+ only
+        newsTrading: true,
+        weekendHolding: 'swing_only',
+        prohibitedStrategies: ['Martingale', 'Latency Arbitrage', 'Copy Trading from External'],
+        platforms: ['MetaTrader 4/5'],
+        instruments: ['Forex', 'Gold', 'Indices'],
+        resetPolicy: 'unlimited',
+        scaling: '25% every 4 months'
       }
     },
     {
       name: 'The5%ers',
       logo: '🎯',
-      description: 'Unique scaling model with high-frequency trading',
+      description: 'Bootcamp program scaling from $20K to $4M with 100% profit split',
       rules: {
-        dailyLoss: 5,
-        maxDrawdown: 4,
+        dailyLoss: 0, // None on Bootcamp, 4% on Hyper Growth
+        maxDrawdown: 5, // 5% per step Bootcamp, 8% Hyper Growth
         profitTarget: 6,
-        minTradingDays: 6,
+        phase2Target: 6,
+        minTradingDays: 0,
         maxPositionSize: 1,
         scalingTarget: 6,
-        challengeTypes: ['1-step', '2-step'],
-        accountSizes: [4000, 6000, 10000, 20000, 40000, 100000]
-      }
-    },
-    {
-      name: 'FundedNext',
-      logo: '🚀',
-      description: 'Fast-growing prop firm with competitive conditions',
-      rules: {
-        dailyLoss: 5,
-        maxDrawdown: 10,
-        profitTarget: 8,
-        minTradingDays: 5,
-        maxPositionSize: 2,
-        scalingTarget: 8,
-        challengeTypes: ['1-step', '2-step', 'instant-funding'],
-        accountSizes: [6000, 15000, 25000, 50000, 100000, 200000]
+        challengeTypes: ['Bootcamp Program', 'Hyper Growth Challenge', 'High Stakes Trader'],
+        accountSizes: [20000, 6000, 25000], // Starting amounts
+        timeLimit: 365, // 12 months Bootcamp, 4 months Hyper Growth
+        leverage: 10, // 1:10 Bootcamp, 1:100 others
+        profitSplit: 50, // 50% → 75% → 100% progression
+        payoutSchedule: 'Monthly',
+        overnightPositions: true,
+        newsTrading: true,
+        weekendHolding: true,
+        mandatoryStopLoss: true, // ≤2% of equity
+        prohibitedStrategies: ['High-Frequency Trading', 'Latency Arbitrage'],
+        platforms: ['MetaTrader 4/5'],
+        instruments: ['Forex', 'Indices', 'Commodities'],
+        inactivityRule: 30, // >30 days closes account
+        scaling: 'Account doubles at profit milestones',
+        maxScaling: 4000000
       }
     },
     {
       name: 'Apex Trader Funding',
       logo: '⚡',
-      description: 'Futures-focused prop firm with flexible rules',
+      description: 'Futures-only prop firm with 100% profit on first $25K',
       rules: {
-        dailyLoss: 3,
-        maxDrawdown: 6,
-        profitTarget: 8,
-        minTradingDays: 10,
-        maxPositionSize: 10,
-        scalingTarget: 8,
-        challengeTypes: ['1-step', '2-step'],
-        accountSizes: [25000, 50000, 100000, 150000, 250000]
-      }
-    },
-    {
-      name: 'TopStep',
-      logo: '📈',
-      description: 'Established futures prop firm with proven track record',
-      rules: {
-        dailyLoss: 2,
-        maxDrawdown: 4,
-        profitTarget: 6,
-        minTradingDays: 8,
-        maxPositionSize: 5,
-        scalingTarget: 6,
-        challengeTypes: ['1-step', '2-step'],
-        accountSizes: [50000, 100000, 150000]
-      }
-    },
-    {
-      name: 'Lux Trading Firm',
-      logo: '💎',
-      description: 'Premium prop firm with high capital allocation',
-      rules: {
-        dailyLoss: 5,
-        maxDrawdown: 10,
-        profitTarget: 8,
-        minTradingDays: 4,
-        maxPositionSize: 2,
-        scalingTarget: 8,
-        challengeTypes: ['1-step', '2-step', 'instant-funding'],
-        accountSizes: [10000, 25000, 50000, 100000, 200000, 500000]
-      }
-    },
-    {
-      name: 'E8 Markets',
-      logo: '🌟',
-      description: 'Innovative prop firm with trader-friendly conditions',
-      rules: {
-        dailyLoss: 5,
-        maxDrawdown: 8,
-        profitTarget: 8,
-        minTradingDays: 5,
-        maxPositionSize: 2,
-        scalingTarget: 8,
-        challengeTypes: ['1-step', '2-step'],
-        accountSizes: [25000, 50000, 100000, 200000]
-      }
-    },
-    {
-      name: 'True Forex Funds',
-      logo: '✅',
-      description: 'Reliable prop firm with consistent payouts',
-      rules: {
-        dailyLoss: 5,
-        maxDrawdown: 12,
-        profitTarget: 10,
-        minTradingDays: 5,
-        maxPositionSize: 2,
-        scalingTarget: 10,
-        challengeTypes: ['2-step', 'instant-funding'],
-        accountSizes: [10000, 25000, 50000, 100000, 200000]
-      }
-    },
-    {
-      name: 'Funded Trading Plus',
-      logo: '🔥',
-      description: 'Growing prop firm with competitive profit splits',
-      rules: {
-        dailyLoss: 4,
-        maxDrawdown: 8,
-        profitTarget: 8,
-        minTradingDays: 5,
-        maxPositionSize: 2,
-        scalingTarget: 8,
-        challengeTypes: ['1-step', '2-step'],
-        accountSizes: [10000, 25000, 50000, 100000]
-      }
-    },
-    {
-      name: 'Smart Prop Trader',
-      logo: '🧠',
-      description: 'AI-powered evaluation with smart risk management',
-      rules: {
-        dailyLoss: 5,
-        maxDrawdown: 10,
-        profitTarget: 10,
-        minTradingDays: 4,
-        maxPositionSize: 2,
-        scalingTarget: 10,
-        challengeTypes: ['1-step', '2-step', 'instant-funding'],
-        accountSizes: [25000, 50000, 100000, 200000]
-      }
-    },
-    {
-      name: 'Surge Trader',
-      logo: '⚡',
-      description: 'Fast evaluation process with quick payouts',
-      rules: {
-        dailyLoss: 3,
-        maxDrawdown: 6,
-        profitTarget: 6,
-        minTradingDays: 3,
-        maxPositionSize: 2,
-        scalingTarget: 6,
-        challengeTypes: ['1-step', '2-step'],
-        accountSizes: [25000, 50000, 100000, 200000]
-      }
-    },
-    {
-      name: 'Goat Funded Trader',
-      logo: '🐐',
-      description: 'Unique prop firm with flexible trading conditions',
-      rules: {
-        dailyLoss: 5,
-        maxDrawdown: 8,
-        profitTarget: 7,
-        minTradingDays: 5,
-        maxPositionSize: 2,
-        scalingTarget: 7,
-        challengeTypes: ['1-step', '2-step'],
-        accountSizes: [10000, 25000, 50000, 100000]
-      }
-    },
-    {
-      name: 'Breakout Prop',
-      logo: '📊',
-      description: 'Breakout-focused prop firm with technical analysis',
-      rules: {
-        dailyLoss: 4,
-        maxDrawdown: 8,
-        profitTarget: 8,
-        minTradingDays: 5,
-        maxPositionSize: 2,
-        scalingTarget: 8,
-        challengeTypes: ['1-step', '2-step'],
-        accountSizes: [25000, 50000, 100000]
-      }
-    },
-    {
-      name: 'Skilled Funded Trader',
-      logo: '🎓',
-      description: 'Education-focused prop firm with mentorship',
-      rules: {
-        dailyLoss: 5,
-        maxDrawdown: 10,
-        profitTarget: 8,
-        minTradingDays: 5,
-        maxPositionSize: 2,
-        scalingTarget: 8,
-        challengeTypes: ['1-step', '2-step'],
-        accountSizes: [10000, 25000, 50000, 100000]
-      }
-    },
-    {
-      name: 'Bespoke Funding',
-      logo: '👔',
-      description: 'Customized funding solutions for professional traders',
-      rules: {
-        dailyLoss: 5,
-        maxDrawdown: 12,
-        profitTarget: 10,
-        minTradingDays: 10,
-        maxPositionSize: 3,
-        scalingTarget: 10,
-        challengeTypes: ['2-step', 'instant-funding'],
-        accountSizes: [25000, 50000, 100000, 200000, 500000]
-      }
-    },
-    {
-      name: 'Audacity Capital',
-      logo: '🎪',
-      description: 'Bold prop firm with aggressive scaling opportunities',
-      rules: {
-        dailyLoss: 4,
-        maxDrawdown: 8,
-        profitTarget: 8,
-        minTradingDays: 4,
-        maxPositionSize: 2,
-        scalingTarget: 8,
-        challengeTypes: ['1-step', '2-step'],
-        accountSizes: [25000, 50000, 100000, 200000]
-      }
-    },
-    {
-      name: 'City Traders Imperium',
-      logo: '🏙️',
-      description: 'London-based prop firm with institutional approach',
-      rules: {
-        dailyLoss: 5,
-        maxDrawdown: 10,
-        profitTarget: 8,
-        minTradingDays: 5,
-        maxPositionSize: 2,
-        scalingTarget: 8,
-        challengeTypes: ['1-step', '2-step'],
-        accountSizes: [10000, 25000, 50000, 100000]
-      }
-    },
-    {
-      name: 'Fidelcrest',
-      logo: '🛡️',
-      description: 'Reliable prop firm with consistent evaluation process',
-      rules: {
-        dailyLoss: 5,
-        maxDrawdown: 10,
-        profitTarget: 10,
-        minTradingDays: 10,
-        maxPositionSize: 2,
-        scalingTarget: 10,
-        challengeTypes: ['2-step'],
-        accountSizes: [10000, 25000, 50000, 100000, 200000]
-      }
-    },
-    {
-      name: 'Alpha Capital Group',
-      logo: '🅰️',
-      description: 'Professional prop firm with advanced risk management',
-      rules: {
-        dailyLoss: 5,
-        maxDrawdown: 8,
-        profitTarget: 8,
-        minTradingDays: 5,
-        maxPositionSize: 2,
-        scalingTarget: 8,
-        challengeTypes: ['1-step', '2-step'],
-        accountSizes: [25000, 50000, 100000, 200000]
-      }
-    },
-    {
-      name: 'Instant Funding Prop',
-      logo: '⚡',
-      description: 'Instant funding with no evaluation required',
-      rules: {
-        dailyLoss: 3,
-        maxDrawdown: 6,
-        profitTarget: 0,
+        dailyLoss: 0, // No daily loss limit
+        maxDrawdown: 'trailing', // Trailing threshold varies
+        profitTarget: 'varies', // $1,500 ($25K), $3,000 ($50K), etc.
         minTradingDays: 0,
-        maxPositionSize: 1,
-        scalingTarget: 0,
-        challengeTypes: ['instant-funding'],
-        accountSizes: [5000, 10000, 25000, 50000]
+        maxPositionSize: 10,
+        challengeTypes: ['$25K Evaluation', '$50K Evaluation', '$100K Evaluation', '$150K Evaluation', '$250K Evaluation', '$300K Evaluation'],
+        accountSizes: [25000, 50000, 100000, 150000, 250000, 300000],
+        timeLimit: null, // Monthly subscription
+        leverage: 'futures_standard',
+        profitSplit: 100, // 100% first $25K, then 90%
+        payoutSchedule: '8-day cycle',
+        overnightPositions: true,
+        newsTrading: true,
+        weekendHolding: true,
+        copyTrading: true, // Up to 20 accounts
+        algorithmicTrading: true,
+        platforms: ['Tradovate', 'Rithmic'],
+        instruments: ['Futures Only (ES, NQ, YM, RTY, CL, GC)'],
+        resetPolicy: true
       }
     },
     {
-      name: 'Traders Central',
-      logo: '🎯',
-      description: 'Community-focused prop firm with social trading',
+      name: 'MyFundedFX',
+      logo: '💰',
+      description: 'Flexible evaluation with up to 92.75% profit split',
       rules: {
         dailyLoss: 5,
         maxDrawdown: 10,
         profitTarget: 8,
-        minTradingDays: 5,
-        maxPositionSize: 2,
-        scalingTarget: 8,
-        challengeTypes: ['1-step', '2-step'],
-        accountSizes: [10000, 25000, 50000, 100000]
-      }
-    },
-    {
-      name: 'Maven Trading',
-      logo: '📚',
-      description: 'Educational prop firm with comprehensive training',
-      rules: {
-        dailyLoss: 4,
-        maxDrawdown: 8,
-        profitTarget: 8,
-        minTradingDays: 5,
-        maxPositionSize: 2,
-        scalingTarget: 8,
-        challengeTypes: ['1-step', '2-step'],
-        accountSizes: [25000, 50000, 100000]
-      }
-    },
-    {
-      name: 'Rocket21',
-      logo: '🚀',
-      description: 'Fast-track prop firm with quick evaluation',
-      rules: {
-        dailyLoss: 5,
-        maxDrawdown: 8,
-        profitTarget: 6,
+        phase2Target: 5,
         minTradingDays: 3,
         maxPositionSize: 2,
-        scalingTarget: 6,
-        challengeTypes: ['1-step'],
-        accountSizes: [10000, 25000, 50000, 100000]
+        scalingTarget: 8,
+        challengeTypes: ['Two-Step Challenge', 'One-Step Challenge', 'Instant Funding (Accelerated)'],
+        accountSizes: [25000, 50000, 100000, 200000, 300000],
+        timeLimit: null, // No time limit
+        leverage: 100,
+        profitSplit: 80, // Up to 92.75% VIP
+        payoutSchedule: 'Bi-weekly',
+        overnightPositions: 'swing_only',
+        newsTrading: true,
+        weekendHolding: 'swing_only',
+        eaTrading: true,
+        prohibitedStrategies: ['Arbitrage', 'Tick Scalping Bots', 'Latency Trading'],
+        platforms: ['MetaTrader 4/5', 'cTrader'],
+        instruments: ['Forex', 'Indices', 'Commodities', 'Crypto'],
+        scaling: '25% quarterly increase',
+        resetPolicy: true
       }
     },
     {
-      name: 'OFP (Our Funded Prop)',
-      logo: '🏢',
-      description: 'Established prop firm with traditional approach',
+      name: 'FundedNext',
+      logo: '🚀',
+      description: 'Scaling up to $4M with 95% profit split on Stellar accounts',
       rules: {
         dailyLoss: 5,
         maxDrawdown: 10,
         profitTarget: 10,
-        minTradingDays: 10,
+        phase2Target: 5,
+        minTradingDays: 0,
         maxPositionSize: 2,
         scalingTarget: 10,
-        challengeTypes: ['2-step'],
-        accountSizes: [10000, 25000, 50000, 100000, 200000]
+        challengeTypes: ['Two-Phase Evaluation', 'Stellar 1-Step', 'Express Challenge', 'Consistency Challenge'],
+        accountSizes: [6000, 15000, 25000, 50000, 100000, 200000],
+        timeLimit: 60, // 60 days Phase 1, unlimited Phase 2
+        leverage: 100,
+        profitSplit: 60, // 60%-95%, Stellar starts at 90%
+        payoutSchedule: 'Bi-weekly',
+        overnightPositions: true,
+        newsTrading: true,
+        weekendHolding: true,
+        prohibitedStrategies: ['Martingale', 'Latency Arbitrage', 'High-Frequency Scalping'],
+        platforms: ['MetaTrader 4/5', 'cTrader'],
+        instruments: ['100+ Forex Pairs', 'Indices', 'Commodities', 'Crypto'],
+        scaling: '25% increase every 4 months',
+        resetPolicy: true,
+        maxScaling: 4000000
+      }
+    },
+    {
+      name: 'Topstep',
+      logo: '📈',
+      description: 'Futures-only with 100% profit on first $10K',
+      rules: {
+        dailyLoss: 'varies', // $1,000 ($50K), $2,000 ($100K), $3,000 ($150K)
+        maxDrawdown: 'trailing', // Same as daily loss limits
+        profitTarget: 'varies', // $3,000 ($50K), $6,000 ($100K), $9,000 ($150K)
+        minTradingDays: 5,
+        maxPositionSize: 10,
+        challengeTypes: ['Trading Combine $50K', 'Trading Combine $100K', 'Trading Combine $150K'],
+        accountSizes: [50000, 100000, 150000],
+        timeLimit: null,
+        leverage: 'futures_standard',
+        profitSplit: 100, // 100% first $10K, then 90%
+        payoutSchedule: 'Varies',
+        overnightPositions: true,
+        newsTrading: false, // Forbidden 1 min before/after high-impact news
+        weekendHolding: true,
+        platforms: ['Tradovate', 'Rithmic', 'NinjaTrader'],
+        instruments: ['CME Futures Only'],
+        resetPolicy: true
+      }
+    },
+    {
+      name: 'DNA Funded',
+      logo: '🧬',
+      description: 'Demo account with live mirroring, 800+ instruments',
+      rules: {
+        dailyLoss: 'varies', // 5% (One-Step), 6% (Two-Step), 4% (10-Day)
+        maxDrawdown: 'varies', // 6% (One-Step), 10% (Two-Step), 5% (10-Day)
+        profitTarget: 8,
+        minTradingDays: 3,
+        maxPositionSize: 2,
+        scalingTarget: 8,
+        challengeTypes: ['One-Step Challenge', 'Two-Step Challenge', '10-Day Challenge'],
+        accountSizes: [5000, 10000, 25000, 50000, 100000, 200000],
+        timeLimit: null, // No time cap
+        leverage: 'varies', // 1:30 (One-Step), 1:50 (Two-Step)
+        profitSplit: 80, // 80%-90%
+        payoutSchedule: '14-day (7-day add-on available)',
+        overnightPositions: true,
+        newsTrading: true,
+        weekendHolding: true,
+        eaTrading: true,
+        prohibitedStrategies: ['HFT', 'Grid Trading', 'Hedging', 'Latency Arbitrage'],
+        platforms: ['MetaTrader 4/5'],
+        instruments: ['800+ Instruments'],
+        fundedStage: 'Demo with live mirroring',
+        portfolioCap: 600000
+      }
+    },
+    {
+      name: 'FundingPips',
+      logo: '💧',
+      description: 'Scaling up to $2M with 100% profit split option',
+      rules: {
+        dailyLoss: 'varies', // 5% (standard), 3% (Pro), 5% (Zero)
+        maxDrawdown: 'varies', // 10% (standard), 6% (Pro), 10% (Zero)
+        profitTarget: 'varies', // 8%/5% (Two-Step), 6%/6% (Pro), 10% (One-Step)
+        minTradingDays: 3,
+        maxPositionSize: 2,
+        challengeTypes: ['Two-Step Challenge', 'Two-Step Pro Challenge', 'One-Step Challenge', 'Zero Program (Instant)'],
+        accountSizes: [5000, 10000, 25000, 50000, 100000],
+        timeLimit: 'varies', // No limit on Pro, 30 days others
+        leverage: 100,
+        profitSplit: 80, // Up to 100% monthly on One-Step, 95% on Zero
+        payoutSchedule: 'Bi-weekly',
+        overnightPositions: true,
+        newsTrading: true,
+        weekendHolding: true,
+        eaTrading: true,
+        prohibitedStrategies: ['Copy-trading from external accounts'],
+        platforms: ['MetaTrader 4/5'],
+        instruments: ['Major Forex', 'Indices', 'Commodities'],
+        maxScaling: 2000000
+      }
+    },
+    {
+      name: 'BrightFunded',
+      logo: '☀️',
+      description: 'Trade2Earn loyalty program with up to 100% profit split',
+      rules: {
+        dailyLoss: 5,
+        maxDrawdown: 10,
+        profitTarget: 'varies', // 10%/5% (Classic), 10% (Rapid), None (Instant)
+        minTradingDays: 'varies', // 5 days (Classic), 1 day (Rapid)
+        maxPositionSize: 2,
+        challengeTypes: ['Classic Challenge', 'Rapid Challenge', 'Instant Challenge'],
+        accountSizes: [5000, 10000, 25000, 50000, 100000, 200000],
+        timeLimit: 30, // 30 days per phase
+        leverage: 100,
+        profitSplit: 100, // Up to 100%
+        payoutSchedule: 'Bi-weekly',
+        overnightPositions: true,
+        newsTrading: true,
+        weekendHolding: true,
+        trade2EarnProgram: true,
+        platforms: ['MetaTrader 4/5'],
+        instruments: ['Forex', 'Indices', 'Commodities', 'Crypto'],
+        resetPolicy: true
       }
     }
   ];

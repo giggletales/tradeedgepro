@@ -1,10 +1,75 @@
 import React, { useState, useEffect, useRef, memo } from 'react';
-import { Zap, TrendingUp, TrendingDown, Clock, Target, AlertTriangle, CheckCircle, Filter } from 'lucide-react';
+import { Zap, TrendingUp, TrendingDown, Clock, Target, AlertTriangle, CheckCircle, Filter, Shield, XCircle } from 'lucide-react';
 import TradingViewMiniChart from './TradingViewMiniChart';
+import { useTradingPlan } from '../contexts/TradingPlanContext';
 
 const SignalsFeed = () => {
   const [filter, setFilter] = useState('all');
   const [sortBy, setSortBy] = useState('newest');
+  const { propFirm, accountConfig, riskConfig } = useTradingPlan();
+
+  // Rule breach detection function
+  const checkRuleBreach = (signal: any) => {
+    if (!propFirm || !accountConfig || !riskConfig) return { safe: true, warnings: [] };
+
+    const warnings: string[] = [];
+    const accountSize = accountConfig.size;
+    const rules = propFirm.rules;
+
+    // Calculate position size and risk
+    const riskAmount = accountSize * (riskConfig.riskPercentage / 100);
+    const entryPrice = parseFloat(signal.entry);
+    const stopLossPrice = parseFloat(signal.stopLoss);
+    const pipValue = signal.pair.includes('JPY') ? 0.01 : 0.0001;
+    const pipsAtRisk = Math.abs(entryPrice - stopLossPrice) / pipValue;
+    const dollarPerPip = 1; // Simplified
+    const positionSize = riskAmount / (pipsAtRisk * dollarPerPip);
+    const positionValue = entryPrice * positionSize * 100000; // Standard lot size
+    const positionPercentage = (positionValue / accountSize) * 100;
+
+    // Check daily loss limit
+    if (riskConfig.riskPercentage > rules.dailyLoss) {
+      warnings.push(`⚠️ Risk per trade (${riskConfig.riskPercentage}%) exceeds daily loss limit (${rules.dailyLoss}%)`);
+    }
+
+    // Check maximum position size
+    if (positionPercentage > rules.maxPositionSize) {
+      warnings.push(`⚠️ Position size (${positionPercentage.toFixed(1)}%) exceeds maximum allowed (${rules.maxPositionSize}%)`);
+    }
+
+    // Check overnight positions
+    if (rules.overnightPositions === false) {
+      warnings.push(`⚠️ ${propFirm.name} forbids overnight positions on standard accounts`);
+    }
+
+    // Check news trading
+    if (rules.newsTrading === false) {
+      warnings.push(`⚠️ ${propFirm.name} forbids news trading on standard accounts`);
+    }
+
+    // Check weekend holding
+    if (rules.weekendHolding === false) {
+      const now = new Date();
+      const dayOfWeek = now.getDay();
+      if (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0) {
+        warnings.push(`⚠️ ${propFirm.name} forbids weekend holding`);
+      }
+    }
+
+    // Check consistency rule (FTMO specific)
+    if (rules.consistencyRule && signal.pips && signal.pips !== 'Pending') {
+      const dailyProfit = Math.abs(parseFloat(signal.pips)) * dollarPerPip * positionSize;
+      const totalProfit = accountSize * 0.05; // Assume 5% total profit so far
+      if (dailyProfit > totalProfit * 0.5) {
+        warnings.push(`⚠️ Single trade profit may exceed 50% of total profit (consistency rule)`);
+      }
+    }
+
+    return {
+      safe: warnings.length === 0,
+      warnings
+    };
+  };
 
   const signals = [
     {
@@ -178,6 +243,24 @@ const SignalsFeed = () => {
       <div className="space-y-4">
         {filteredSignals.map((signal) => (
           <div key={signal.id} className="bg-gray-800 rounded-xl border border-gray-700 p-6">
+            {/* Rule Breach Check */}
+            {(() => {
+              const ruleCheck = checkRuleBreach(signal);
+              return !ruleCheck.safe && (
+                <div className="mb-4 p-4 bg-red-600/20 border border-red-600 rounded-lg">
+                  <div className="flex items-center space-x-2 text-red-400 mb-2">
+                    <XCircle className="w-5 h-5" />
+                    <span className="font-semibold">Rule Breach Warning</span>
+                  </div>
+                  <div className="space-y-1">
+                    {ruleCheck.warnings.map((warning, idx) => (
+                      <div key={idx} className="text-sm text-red-300">{warning}</div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
+
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Signal Info */}
               <div className="lg:col-span-2 space-y-4">
@@ -253,9 +336,23 @@ const SignalsFeed = () => {
                   </div>
 
                   {signal.status === 'active' && (
-                    <button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition-colors">
-                      Copy Trade
-                    </button>
+                    <>
+                      {(() => {
+                        const ruleCheck = checkRuleBreach(signal);
+                        return ruleCheck.safe ? (
+                          <button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition-colors">
+                            Copy Trade
+                          </button>
+                        ) : (
+                          <button 
+                            disabled
+                            className="w-full mt-4 bg-red-600/50 text-red-300 py-2 rounded-lg text-sm font-medium cursor-not-allowed"
+                          >
+                            Rule Breach Risk
+                          </button>
+                        );
+                      })()}
+                    </>
                   )}
                 </div>
               </div>
