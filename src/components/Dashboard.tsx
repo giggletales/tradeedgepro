@@ -17,7 +17,8 @@ import {
   AlertTriangle,
   CheckCircle,
   Clock,
-  Filter
+  Filter,
+  ArrowRight
 } from 'lucide-react';
 import { useUser } from '../contexts/UserContext';
 import { useTradingPlan } from '../contexts/TradingPlanContext';
@@ -152,6 +153,63 @@ const Dashboard = () => {
               </button>
             </div>
 
+            {/* TradingView Chart */}
+            <div className="bg-gray-800 rounded-xl border border-gray-700 p-6 mb-6">
+              <h3 className="text-lg font-semibold text-white mb-4">Market Analysis</h3>
+              <div className="h-96">
+                <TradingChart />
+              </div>
+            </div>
+
+            {/* Payment Integration Notice */}
+            {!user.membershipTier || user.membershipTier === 'basic' ? (
+              <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500 rounded-xl p-6 mb-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-semibold text-white mb-2">Upgrade Your Plan</h3>
+                    <p className="text-gray-300 mb-4">
+                      Unlock advanced features including premium signals, risk management tools, and priority support.
+                    </p>
+                    <div className="flex items-center space-x-4 text-sm text-gray-400">
+                      <div className="flex items-center space-x-2">
+                        <CheckCircle className="w-4 h-4 text-green-400" />
+                        <span>Premium Signals</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <CheckCircle className="w-4 h-4 text-green-400" />
+                        <span>Advanced Analytics</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <CheckCircle className="w-4 h-4 text-green-400" />
+                        <span>Priority Support</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <button
+                      onClick={() => navigate('/membership')}
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center space-x-2"
+                    >
+                      <span>Upgrade Now</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                    <div className="text-xs text-gray-400 mt-2">Starting at $99/month</div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-green-600/20 border border-green-500 rounded-xl p-4 mb-6">
+                <div className="flex items-center space-x-2 text-green-400">
+                  <CheckCircle className="w-5 h-5" />
+                  <span className="font-semibold">
+                    {user.membershipTier.charAt(0).toUpperCase() + user.membershipTier.slice(1)} Plan Active
+                  </span>
+                </div>
+                <p className="text-gray-300 text-sm mt-1">
+                  You have access to all premium features. Next billing cycle: {new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString()}
+                </p>
+              </div>
+            )}
           </div>
         );
       case 'signals':
