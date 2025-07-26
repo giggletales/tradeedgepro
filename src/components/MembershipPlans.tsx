@@ -156,7 +156,8 @@ const MembershipPlans = () => {
                 </ul>
 
                 <Link
-                  to="/setup/prop-firm"
+                  to="/signup"
+                  state={{ selectedPlan: { name: plan.name, price: plan.price, period: plan.period } }}
                   className={`w-full ${plan.buttonColor} text-white py-3 rounded-lg font-semibold transition-colors text-center block`}
                 >
                   Start Free Trial
@@ -208,7 +209,7 @@ const MembershipPlans = () => {
                 Join thousands of successful traders who achieved funded account status with our service.
               </p>
               <Link
-                to="/setup/prop-firm"
+                to="/signup"
                 className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold transition-colors inline-flex items-center space-x-2 shadow-lg"
               >
                 <span>Start Your Journey</span>

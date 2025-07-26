@@ -152,7 +152,7 @@ const LandingPage = () => {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
               <Link
-                to="/setup/prop-firm"
+                to="/signup"
                 className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center gap-2 shadow-xl hover:shadow-blue-500/25"
               >
                 Start Your Journey <ArrowRight className="w-5 h-5" />
@@ -293,7 +293,7 @@ const LandingPage = () => {
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
               <Link
-                to="/setup/prop-firm"
+                to="/signup"
                 className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-blue-500/25"
               >
                 Start Your Journey
@@ -345,7 +345,7 @@ const LandingPage = () => {
             <div>
               <h4 className="font-semibold text-white mb-4">Services</h4>
               <ul className="space-y-3 text-gray-400">
-                <li><Link to="/setup/prop-firm" className="hover:text-blue-400 transition-colors">Prop Firm Setup</Link></li>
+                <li><Link to="/signup" className="hover:text-blue-400 transition-colors">Get Started</Link></li>
                 <li><Link to="/membership" className="hover:text-blue-400 transition-colors">Trading Plans</Link></li>
                 <li><Link to="/dashboard" className="hover:text-blue-400 transition-colors">Progress Tracking</Link></li>
                 <li><a href="#" className="hover:text-blue-400 transition-colors">Expert Support</a></li>

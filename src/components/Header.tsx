@@ -64,7 +64,13 @@ const Header = () => {
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center space-x-4">
             <Link
-              to="/setup/prop-firm"
+              to="/signin"
+              className="text-gray-300 hover:text-blue-400 transition-colors font-medium"
+            >
+              Sign In
+            </Link>
+            <Link
+              to="/signup"
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-blue-500/25"
             >
               Get Started
@@ -122,7 +128,14 @@ const Header = () => {
               </a>
               <div className="pt-4 border-t border-gray-700">
                 <Link
-                  to="/setup/prop-firm"
+                  to="/signin"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-blue-400 hover:bg-gray-800 transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/signup"
                   className="block px-3 py-2 rounded-md text-base font-medium bg-blue-600 hover:bg-blue-700 text-white transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
