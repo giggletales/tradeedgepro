@@ -11,7 +11,9 @@ import {
   Activity,
   Target,
   Users,
-  Zap
+  Zap,
+  CreditCard,
+  Bitcoin
 } from 'lucide-react';
 import { useTradingPlan } from '../contexts/TradingPlanContext';
 import TradingChart from './TradingChart';
@@ -19,11 +21,13 @@ import SignalsFeed from './SignalsFeed';
 import RiskManagement from './RiskManagement';
 import PerformanceAnalytics from './PerformanceAnalytics';
 import AlertSystem from './AlertSystem';
+import PaymentModal from './PaymentModal';
 
 const Dashboard = () => {
   const { propFirm, accountConfig, riskConfig, tradingPlan } = useTradingPlan();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   // If no trading plan data, redirect to setup
   if (!propFirm || !accountConfig || !riskConfig) {
@@ -41,6 +45,7 @@ const Dashboard = () => {
     { id: 'trading', label: 'Trading', icon: <TrendingUp className="w-5 h-5" /> },
     { id: 'risk', label: 'Risk Management', icon: <Shield className="w-5 h-5" /> },
     { id: 'analytics', label: 'Analytics', icon: <Activity className="w-5 h-5" /> },
+    { id: 'payments', label: 'Payments', icon: <CreditCard className="w-5 h-5" /> },
   ];
 
   // Calculate current stats based on trading plan
@@ -122,8 +127,104 @@ const Dashboard = () => {
               <Settings className="w-5 h-5" />
               <span>Settings</span>
             </button>
+            
+            {activeTab === 'payments' && (
+              <div className="space-y-6">
+                {/* Payment Overview */}
+                <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
+                  <h3 className="text-xl font-semibold text-white mb-4">Payment Center</h3>
+                  <p className="text-gray-400 mb-6">
+                    Manage your subscription and make secure payments using credit cards or cryptocurrency.
+                  </p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Stripe Payment */}
+                    <div className="bg-gray-700/50 rounded-xl p-6 border border-gray-600">
+                      <div className="flex items-center space-x-3 mb-4">
+                        <CreditCard className="w-8 h-8 text-blue-400" />
+                        <div>
+                          <h4 className="text-lg font-semibold text-white">Credit Card Payment</h4>
+                          <p className="text-sm text-gray-400">Powered by Stripe</p>
+                        </div>
+                      </div>
+                      <ul className="text-sm text-gray-300 space-y-2 mb-6">
+                        <li>• Instant processing</li>
+                        <li>• All major cards accepted</li>
+                        <li>• 3D Secure authentication</li>
+                        <li>• PCI DSS compliant</li>
+                      </ul>
+                      <button
+                        onClick={() => setShowPaymentModal(true)}
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition-colors"
+                      >
+                        Pay with Card
+                      </button>
+                    </div>
+
+                    {/* Coingate Payment */}
+                    <div className="bg-gray-700/50 rounded-xl p-6 border border-gray-600">
+                      <div className="flex items-center space-x-3 mb-4">
+                        <Bitcoin className="w-8 h-8 text-orange-400" />
+                        <div>
+                          <h4 className="text-lg font-semibold text-white">Cryptocurrency Payment</h4>
+                          <p className="text-sm text-gray-400">Powered by Coingate</p>
+                        </div>
+                      </div>
+                      <ul className="text-sm text-gray-300 space-y-2 mb-6">
+                        <li>• 70+ cryptocurrencies</li>
+                        <li>• Lower transaction fees</li>
+                        <li>• Blockchain security</li>
+                        <li>• Real-time rates</li>
+                      </ul>
+                      <button
+                        onClick={() => setShowPaymentModal(true)}
+                        className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-lg font-semibold transition-colors"
+                      >
+                        Pay with Crypto
+                      </button>
+                    </div>
+                  </div>
+                </div>
             <button 
+                {/* Payment History */}
+                <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
+                  <h3 className="text-lg font-semibold text-white mb-4">Payment History</h3>
+                  <div className="space-y-4">
+                    {/* Sample payment history */}
+                    <div className="flex items-center justify-between p-4 bg-gray-700/50 rounded-lg">
+                      <div className="flex items-center space-x-3">
+                        <CreditCard className="w-5 h-5 text-blue-400" />
+                        <div>
+                          <div className="text-white font-medium">Professional Plan</div>
+                          <div className="text-sm text-gray-400">Jan 15, 2025</div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-white font-semibold">$99.00</div>
+                        <div className="text-sm text-green-400">Completed</div>
+                      </div>
+                    </div>
+                    
+                    <div className="text-center py-8 text-gray-400">
+                      <p>No additional payment history available</p>
+                    </div>
+                  </div>
+                </div>
               onClick={handleBackToSetup}
+                {/* Security Notice */}
+                <div className="bg-blue-600/20 border border-blue-600 rounded-xl p-6">
+                  <div className="flex items-center space-x-2 text-blue-400 mb-3">
+                    <Shield className="w-5 h-5" />
+                    <span className="font-semibold">Security & Privacy</span>
+                  </div>
+                  <p className="text-gray-300 text-sm">
+                    All payments are processed securely through industry-leading payment processors. 
+                    We never store your payment information and all transactions are encrypted with 
+                    bank-level security.
+                  </p>
+                </div>
+              </div>
+            )}
               className="w-full flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-red-600 hover:text-white rounded-lg transition-colors"
             >
               <Link to="/" className="flex items-center space-x-3">
@@ -133,6 +234,14 @@ const Dashboard = () => {
             </button>
           </div>
         </div>
+        
+        {/* Payment Modal */}
+        <PaymentModal
+          isOpen={showPaymentModal}
+          onClose={() => setShowPaymentModal(false)}
+          planName="TraderEdge Pro"
+          planPrice={99}
+        />
       </div>
 
       {/* Main Content */}
