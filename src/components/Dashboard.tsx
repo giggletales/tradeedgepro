@@ -123,16 +123,8 @@ const Dashboard = () => {
               </div>
             )}
 
-            {/* TradingView Chart */}
-            <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
-              <h3 className="text-lg font-semibold text-white mb-4">Market Analysis</h3>
-              <div className="h-96">
-                <TradingChart />
-              </div>
-            </div>
-
             {/* Quick Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <button
                 onClick={() => setActiveTab('signals')}
                 className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl transition-colors flex items-center space-x-3"
@@ -161,6 +153,14 @@ const Dashboard = () => {
                 <Settings className="w-5 h-5" />
                 <span>Setup Plan</span>
               </button>
+            </div>
+
+            {/* Market Analysis Chart */}
+            <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
+              <h3 className="text-lg font-semibold text-white mb-4">Market Analysis</h3>
+              <div className="h-96 w-full">
+                <TradingChart />
+              </div>
             </div>
           </div>
         );
