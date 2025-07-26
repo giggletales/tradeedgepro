@@ -95,9 +95,6 @@ const Dashboard = () => {
       case 'overview':
         return (
           <div className="space-y-6">
-            {/* Live Price Ticker */}
-            <LivePriceTicker />
-            
             {/* Trading Plan Status */}
             {propFirm && accountConfig && (
               <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
@@ -155,13 +152,6 @@ const Dashboard = () => {
               </button>
             </div>
 
-            {/* Market Analysis Chart */}
-            <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
-              <h3 className="text-lg font-semibold text-white mb-4">Market Analysis</h3>
-              <div className="h-96 w-full">
-                <TradingChart />
-              </div>
-            </div>
           </div>
         );
       case 'signals':
