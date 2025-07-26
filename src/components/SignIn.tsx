@@ -75,9 +75,9 @@ const SignIn = () => {
         
         // Navigate based on whether they have a selected plan
         if (selectedPlan) {
-          navigate('/setup/prop-firm', { state: { selectedPlan } });
+          navigate('/payment', { state: { selectedPlan } });
         } else {
-          navigate('/dashboard');
+          navigate('/payment', { state: { selectedPlan: { name: 'Professional', price: 99, period: 'month' } } });
         }
       } else {
         setError('Invalid email or password. Please check your credentials.');

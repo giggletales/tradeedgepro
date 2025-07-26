@@ -76,7 +76,7 @@ const SignUp = () => {
       localStorage.setItem('user_data', JSON.stringify(userData));
       
       // Navigate to setup flow
-      navigate('/setup/prop-firm', { 
+      navigate('/payment', { 
         state: { 
           newUser: true,
           selectedPlan 

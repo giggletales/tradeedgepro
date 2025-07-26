@@ -8,6 +8,7 @@ import PropFirmSelection from './components/PropFirmSelection';
 import AccountConfiguration from './components/AccountConfiguration';
 import RiskConfiguration from './components/RiskConfiguration';
 import TradingPlanGeneration from './components/TradingPlanGenerator';
+import PaymentFlow from './components/PaymentFlow';
 import Dashboard from './components/Dashboard';
 import { UserProvider } from './contexts/UserContext';
 import { TradingPlanProvider } from './contexts/TradingPlanContext';
@@ -23,6 +24,7 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/signin" element={<SignIn />} />
               <Route path="/membership" element={<MembershipPlans />} />
+              <Route path="/payment" element={<PaymentFlow />} />
               <Route path="/setup/prop-firm" element={<PropFirmSelection />} />
               <Route path="/setup/account" element={<AccountConfiguration />} />
               <Route path="/setup/risk" element={<RiskConfiguration />} />
